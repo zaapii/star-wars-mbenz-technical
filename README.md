@@ -161,12 +161,40 @@ src/
 
 ## 🚀 Deployment
 
-The app is built for production with:
+The app is deployed on **Netlify**.
+
+I chose Netlify over GitHub Pages for several reasons:
+
+- **Better Developer Experience**: One-click deploys, environment variable support, deploy previews, automatic HTTPS, and more
+- **CI/CD out of the box**: Build and deploy workflows without needing additional configuration
+- **Dynamic Routing Support**: GitHub Pages is static-only and doesn’t handle SPA routing well. Netlify supports this via a `_redirects` file or `netlify.toml`
+- **Custom Domain & Favicon Management**: Netlify makes DNS configuration and asset handling straightforward
+
+### 🌍 Live Version
+
+You can check out the live version here: [https://star-wars-mbenz.netlify.app/](https://star-wars-mbenz.netlify.app/)
+
+### 🏗️ Deployment Steps
 
 ```bash
+# Build the production version
 pnpm build
-pnpm preview  # Test the production build locally
+
+# Optional: Preview locally
+pnpm preview
 ```
+
+## 🛠️ CI/CD
+
+This project uses **GitHub Actions** for CI/CD with three separate jobs:
+
+- **Lint & Unit Tests**: Runs ESLint, TypeScript checks, and unit tests with coverage on every push and PR to `main` or `develop`
+- **E2E Tests**: Executes Playwright tests in a real browser environment and uploads the test report
+- **Production Build**: Runs only if tests pass, builds the app, and uploads the build artifacts (`dist/`)
+
+All workflows use **Node.js 20**, **pnpm 8**, and leverage caching for faster installs.
+
+> Deployments are handled via **Netlify**, which builds the production version using the `dist/` output.
 
 ## 🤔 Why These Choices?
 

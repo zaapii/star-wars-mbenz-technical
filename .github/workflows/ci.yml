@@ -1,13 +1,10 @@
-name: CI Pipeline
+name: CI Pipeline Github Actions - Star Wars
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main]
   pull_request:
-    branches: [main, develop]
-
-permissions:
-  contents: write
+    branches: [main]
 
 env:
   NODE_VERSION: '20'
