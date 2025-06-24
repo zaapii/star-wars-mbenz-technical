@@ -20,7 +20,7 @@ I hope you enjoy this speed-light travel with me!
 
 ```bash
 # Clone and install
-git clone <your-repo>
+git clone https://github.com/zaapii/star-wars-mbenz-technical
 cd star-wars
 pnpm install
 
