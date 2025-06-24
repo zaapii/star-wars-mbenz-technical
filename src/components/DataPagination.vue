@@ -37,6 +37,7 @@
 
   const paginationRef = ref<HTMLElement>()
   const currentFocusedPage = ref<number>(props.currentPage)
+  const isKeyboardPagination = ref(false)
 
   const focusFirstVisiblePage = () => {
     if (props.visiblePages.length > 0) {
@@ -63,35 +64,34 @@
     }
   }
 
-  const handlePaginationFocus = () => {
-    nextTick(() => {
-      focusFirstVisiblePage()
-    })
-  }
-
   watch(
     () => props.currentPage,
     _ => {
-      nextTick(() => {
-        focusCurrentPage()
-      })
+      if (isKeyboardPagination.value) {
+        nextTick(() => {
+          focusCurrentPage()
+        })
+      }
     }
   )
 
   watch(
     () => props.visiblePages,
     () => {
-      nextTick(() => {
-        if (props.visiblePages.includes(props.currentPage)) {
-          focusCurrentPage()
-        } else {
-          focusFirstVisiblePage()
-        }
-      })
+      if (isKeyboardPagination.value) {
+        nextTick(() => {
+          if (props.visiblePages.includes(props.currentPage)) {
+            focusCurrentPage()
+          } else {
+            focusFirstVisiblePage()
+          }
+        })
+      }
     }
   )
 
   const handlePaginationKeyNavigation = (event: KeyboardEvent) => {
+    isKeyboardPagination.value = true
     handleKeyNavigation(event, {
       onArrowLeft: () => {
         if (props.hasPreviousPage) {
@@ -137,6 +137,7 @@
       const pageNumber = parseInt(key, 10)
       if (pageNumber <= props.totalPages) {
         event.preventDefault()
+        isKeyboardPagination.value = true
         props.goToPage(pageNumber)
         announce(`Navigated to page ${pageNumber}`)
       }
@@ -157,7 +158,6 @@
     aria-label="Pagination navigation"
     tabindex="0"
     @keydown="handleKeyboardNavigation"
-    @focus="handlePaginationFocus"
   >
     <div class="flex-1 text-sm text-muted-foreground">
       <span v-if="totalItems > 0" aria-live="polite">
