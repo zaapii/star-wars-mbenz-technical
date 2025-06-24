@@ -19,6 +19,7 @@ const vitestConfig: ViteUserConfig['test'] = {
 
 export default defineConfig(() => {
   return {
+    base: '/',
     plugins: [vue(), tailwindcss()],
     resolve: {
       alias: {
