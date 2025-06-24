@@ -196,6 +196,29 @@ All workflows use **Node.js 20**, **pnpm 8**, and leverage caching for faster in
 
 > Deployments are handled via **Netlify**, which builds the production version using the `dist/` output.
 
+## 🌍 Internationalization
+
+I implemented **internationalization (i18n)** using [`vue-i18n`](https://vue-i18n.intlify.dev/) for the following reasons:
+
+- **Great TypeScript support**: Strong typings for translation keys and auto-completion in IDEs
+- **Performance**: Lightweight and optimized for Vue 3, with lazy loading support
+- **Flexibility**: Easy to switch languages at runtime, manage fallback strategies, and support formatting
+
+This project includes translations for **three languages** out of the box:
+
+- 🇺🇸 English (`en`)
+- 🇪🇸 Spanish (`es`)
+- 🇩🇪 German (`de`)
+
+Each translation is organized under the `locales/` directory, and you can switch languages via the UI. The selected language is persisted locally so it stays consistent between sessions.
+
+Here’s an example usage inside components:
+
+```ts
+const { t } = useI18n()
+t('common.hello') // → "Hello" / "Hola" / "Hallo" depending on locale
+```
+
 ## 🤔 Why These Choices?
 
 ### Vue 3 + Composition API
