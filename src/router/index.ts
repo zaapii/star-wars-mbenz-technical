@@ -1,14 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import People from '@/pages/People.vue'
-import Planets from '@/pages/Planets.vue'
-
 const routes = [
   { path: '/', redirect: '/people' },
   {
     path: '/people',
     name: 'people',
-    component: People,
+    component: () => import('@/pages/People.vue'),
     meta: {
       title: 'People',
       description: 'Explore the characters of the Star Wars universe',
@@ -17,16 +14,20 @@ const routes = [
   {
     path: '/planets',
     name: 'planets',
-    component: Planets,
+    component: () => import('@/pages/Planets.vue'),
     meta: {
       title: 'Planets',
       description: 'Explore the planets of the Star Wars universe',
     },
   },
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: '/people',
+  },
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.VITE_BASE_URL),
   routes,
 })
 

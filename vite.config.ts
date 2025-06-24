@@ -17,12 +17,14 @@ const vitestConfig: ViteUserConfig['test'] = {
   exclude: ['**/node_modules/**', '**/dist/**', '**/e2e/**', '**/*.config.*'],
 }
 
-export default defineConfig({
-  plugins: [vue(), tailwindcss()],
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
+export default defineConfig(() => {
+  return {
+    plugins: [vue(), tailwindcss()],
+    resolve: {
+      alias: {
+        '@': fileURLToPath(new URL('./src', import.meta.url)),
+      },
     },
-  },
-  test: vitestConfig,
+    test: vitestConfig,
+  }
 })

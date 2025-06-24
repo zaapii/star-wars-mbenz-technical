@@ -97,7 +97,7 @@ The pattern looks like this:
 // Clean, typed, and handles all the edge cases
 const { data, isLoading, error } = useSwApiQuery({
   queryKey: [queryKeys.people],
-  queryFn: ky => ky.get('people').json(),
+  queryFn: ky => ky.get(queryKeys.people).json(),
 })
 ```
 

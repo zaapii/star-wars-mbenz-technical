@@ -11,7 +11,7 @@ import { createApiClient, type KyConfig } from '../composables/useKyQueryFn'
  */
 
 export const swApiClient = createApiClient({
-  baseURL: import.meta.env.VITE_SWAPI_BASE_URL,
+  baseURL: "https://swapi.info/api/",
   timeout: 10000,
   retry: 3,
   hooks: {
