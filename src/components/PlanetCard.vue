@@ -22,7 +22,7 @@
 
 <template>
   <Card
-    data-testid="planet-card"
+    :data-testid="`planet-card-${planet.name.toLowerCase().replace(/\s+/g, '-')}`"
     class="group relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-2 border border-primary/20 bg-gradient-to-br from-primary/5 via-background to-primary/10 flex flex-col h-full"
     role="article"
     :aria-label="`${t('common.planetCard')} ${planet.name}`"
