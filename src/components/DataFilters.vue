@@ -30,11 +30,11 @@
   }
 
   const props = defineProps<Props>()
-  const { t } = useI18n()
-
   const emit = defineEmits<{
     (e: 'refresh'): void
   }>()
+
+  const { t } = useI18n()
 
   const hasActiveFilters = computed(() => props.searchTerm.trim() !== '')
 

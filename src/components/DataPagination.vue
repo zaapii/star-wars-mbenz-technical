@@ -10,10 +10,10 @@
     SelectTrigger,
     SelectValue,
   } from '@/components/ui/select'
-
   import { useAccessibility } from '@/composables/useAccessibility'
   import { useI18n } from '@/composables/useI18n'
 
+  const props = defineProps<Props>()
   const { handleKeyNavigation, announce } = useAccessibility()
   const { t } = useI18n()
 
@@ -34,8 +34,6 @@
     lastPage: () => void
     setItemsPerPage: (perPage: number) => void
   }
-
-  const props = defineProps<Props>()
 
   const paginationRef = ref<HTMLElement>()
   const currentFocusedPage = ref<number>(props.currentPage)

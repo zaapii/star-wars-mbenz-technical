@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { ref } from 'vue'
 
 import type { Person } from '@/services/api'
+
 import { useDataFilter } from '../useDataFilter'
 
 const unFilteredData = ref<Person[]>([

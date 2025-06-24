@@ -9,6 +9,7 @@ const sharedGlobals = {
   // Browser globals
   window: 'readonly',
   document: 'readonly',
+  navigator: 'readonly',
   HTMLElement: 'readonly',
   HTMLInputElement: 'readonly',
   HTMLLinkElement: 'readonly',

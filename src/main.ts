@@ -2,13 +2,14 @@ import { VueQueryPlugin } from '@tanstack/vue-query'
 import { createApp } from 'vue'
 import { createI18n } from 'vue-i18n'
 
+import de from '@/locale/de.json'
+import en from '@/locale/en.json'
+import es from '@/locale/es.json'
+
 import App from './App.vue'
 import router from './router'
 import './style.css'
 
-import de from '@/locale/de.json'
-import en from '@/locale/en.json'
-import es from '@/locale/es.json'
 
 const i18n = createI18n({
   legacy: false,

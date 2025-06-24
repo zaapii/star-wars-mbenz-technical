@@ -2,11 +2,12 @@ import { render, screen } from '@testing-library/vue'
 import { describe, expect, it } from 'vitest'
 import { createI18n } from 'vue-i18n'
 
-import ErrorState from '../ErrorState.vue'
 
 import de from '@/locale/de.json'
 import en from '@/locale/en.json'
 import es from '@/locale/es.json'
+
+import ErrorState from '../ErrorState.vue'
 
 const i18n = createI18n({
   legacy: false,
