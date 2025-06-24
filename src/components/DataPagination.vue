@@ -153,7 +153,7 @@
 <template>
   <nav
     ref="paginationRef"
-    class="flex items-center justify-between space-x-2 py-4"
+    class="flex items-center justify-between space-x-2 py-4 flex-col md:flex-row"
     role="navigation"
     :aria-label="t('common.paginationNavigation')"
     tabindex="0"
@@ -167,8 +167,8 @@
       <span v-else aria-live="polite">{{ t('common.noResults') }}</span>
     </div>
 
-    <div class="flex items-center space-x-6 lg:space-x-8">
-      <div class="flex items-center space-x-2">
+    <div class="flex items-center space-x-6 lg:space-x-8 flex-col md:flex-row gap-4 md:gap-0">
+      <div class="flex items-center gap-4 mt-2 md:mt-0">
         <label for="items-per-page" class="text-sm font-medium">{{
           t('common.rowsPerPage')
         }}</label>

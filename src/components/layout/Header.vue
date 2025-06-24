@@ -22,11 +22,11 @@
     role="banner"
     :aria-label="t('common.applicationHeader')"
   >
-    <div class="flex items-center gap-2 px-4">
+    <div class="flex items-center gap-2 pl-4 pr-0 md:pr-4">
       <SidebarTrigger class="-ml-1" :aria-label="t('common.toggleSidebar')" aria-expanded="true" />
       <Separator orientation="vertical" class="mr-2 h-4" />
       <nav :aria-label="t('common.breadcrumbNavigation')">
-        <Breadcrumb>
+        <Breadcrumb class="hidden md:block">
           <BreadcrumbList>
             <BreadcrumbItem class="hidden md:block">
               <BreadcrumbLink href="#" :aria-label="t('common.goToHome')">
@@ -41,7 +41,9 @@
         </Breadcrumb>
       </nav>
     </div>
-    <div class="ml-auto flex items-center gap-8 px-4">
+    <div
+      class="ml-0 md:ml-auto flex items-center gap-2 md:gap-8 pr-4 justify-between w-full md:w-auto"
+    >
       <ThemeToggle />
       <LanguageSwitcher />
     </div>

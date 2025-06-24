@@ -25,7 +25,13 @@
 
 <template>
   <div class="flex gap-2 items-center">
-    {{ `${t('common.currentLocale')}: ${currentLocaleDisplay.flag}` }}
+    <span class="hidden md:block">{{ t('common.currentLocale') }}:</span>
+    <span class="flex items-center gap-2">
+      <span class="text-lg" role="img" :aria-label="`${currentLocaleDisplay.name} flag`">
+        {{ currentLocaleDisplay.flag }}
+      </span>
+      <span class="text-sm">{{ currentLocaleDisplay.name }}</span>
+    </span>
   </div>
   <DropdownMenu>
     <DropdownMenuTrigger as-child>

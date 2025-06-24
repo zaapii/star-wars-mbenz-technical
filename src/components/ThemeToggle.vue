@@ -12,9 +12,15 @@
 </script>
 
 <template>
-  <div class="flex items-center gap-8" role="group" aria-label="Theme and faction controls">
+  <div
+    class="flex items-center gap-4 md:gap-8"
+    role="group"
+    aria-label="Theme and faction controls"
+  >
     <div class="flex items-center gap-2 pt-1">
-      <span class="text-sm" id="faction-label">{{ t('common.currentFaction') }}</span>
+      <span class="text-sm hidden md:block" id="faction-label">{{
+        t('common.currentFaction')
+      }}</span>
       <span
         class="text-sm font-bold"
         :class="isJedi ? 'text-blue-600' : 'text-red-600'"
