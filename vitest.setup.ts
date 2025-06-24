@@ -1,5 +1,50 @@
-import { vi } from 'vitest'
-import { ref } from 'vue'
+import { vi } from 'vitest';
+import { ref } from 'vue';
+import './__mocks__/vuei18n';
+
+vi.mock('vue-i18n', () => ({
+  createI18n: vi.fn(() => ({
+    install: vi.fn(),
+    global: {
+      locale: ref('en'),
+      t: vi.fn((key: string) => key)
+    }
+  })),
+  useI18n: vi.fn(() => ({
+    t: vi.fn((key: string) => key),
+    locale: ref('en'),
+    currentLocale: ref('en'),
+    currentLocaleInfo: ref({
+      code: 'en',
+      name: 'English',
+      nativeName: 'English',
+      flag: '🇺🇸'
+    }),
+    availableLocales: ref([]),
+    changeLocale: vi.fn(),
+    initializeLocale: vi.fn(),
+    SUPPORTED_LOCALES: [
+      {
+        code: 'en',
+        name: 'English',
+        nativeName: 'English',
+        flag: '🇺🇸'
+      },
+      {
+        code: 'es',
+        name: 'Spanish',
+        nativeName: 'Español',
+        flag: '🇪🇸'
+      },
+      {
+        code: 'de',
+        name: 'German',
+        nativeName: 'Deutsch',
+        flag: '🇩🇪'
+      }
+    ]
+  }))
+}))
 
 vi.mock('vue-sonner', () => ({
   toast: {
@@ -21,7 +66,7 @@ vi.mock('@/services/api', () => ({
 }));
 
 
-global.fetch = vi.fn(() => 
+global.fetch = vi.fn(() =>
   Promise.resolve({
     ok: true,
     status: 200,

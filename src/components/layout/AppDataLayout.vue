@@ -7,11 +7,22 @@
   import { useDataFilter } from '@/composables/useDataFilter'
   import { useDataPagination as useDataPaginationComposable } from '@/composables/useDataPagination'
   import { useDataSort, type SortOption } from '@/composables/useDataSort'
+  import { useI18n } from '@/composables/useI18n'
 
   import type { Person, Planet } from '../../services/api'
 
+  interface Props {
+    data: (Person | Planet)[]
+    searchKey?: string
+    sortOptions?: SortOption[]
+    defaultSortKey?: string
+    defaultSortDirection?: 'asc' | 'desc'
+    itemsPerPage?: number
+    dataUpdatedAt?: number
+    isRefreshing?: boolean
+  }
+
   const props = withDefaults(defineProps<Props>(), {
-    data: () => [],
     searchKey: 'name',
     sortOptions: () => [
       { key: 'name', label: 'Name', type: 'string' },
@@ -29,24 +40,29 @@
   }>()
 
   const route = useRoute()
+  const { t } = useI18n()
 
-  const title = computed(() => route.meta.title)
-  const description = computed(() => route.meta.description)
+  const title = computed(() => {
+    switch (route.name) {
+      case 'people':
+        return t('navigation.people')
+      case 'planets':
+        return t('navigation.planets')
+      default:
+        return t('common.dataExplorer')
+    }
+  })
 
-  interface Props {
-    data: unknown[]
-    searchKey?: string
-    sortOptions?: Array<{
-      key: string
-      label: string
-      type: 'string' | 'date'
-    }>
-    defaultSortKey?: string
-    defaultSortDirection?: 'asc' | 'desc'
-    itemsPerPage?: number
-    dataUpdatedAt: number | undefined
-    isRefreshing: boolean
-  }
+  const description = computed(() => {
+    switch (route.name) {
+      case 'people':
+        return t('common.starWarsUniverse') + ' - ' + t('navigation.people')
+      case 'planets':
+        return t('common.starWarsUniverse') + ' - ' + t('navigation.planets')
+      default:
+        return t('common.starWarsUniverse')
+    }
+  })
 
   const dataRef = toRef(props, 'data') as Ref<(Planet | Person)[]>
 
@@ -68,7 +84,7 @@
 </script>
 
 <template>
-  <div class="flex flex-col h-full" role="main" aria-label="Data explorer">
+  <div class="flex flex-col h-full" role="main" :aria-label="t('common.dataExplorer')">
     <header class="px-4 py-2">
       <h1 class="text-3xl font-bold tracking-tight">{{ title }}</h1>
       <p class="text-muted-foreground">
@@ -106,7 +122,7 @@
     <footer
       class="border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky bottom-0"
     >
-      <div class="container mx-auto">
+      <div class="container mx-auto p-4">
         <DataPagination
           :current-page="dataPagination.currentPage.value"
           :items-per-page="dataPagination.itemsPerPage.value"

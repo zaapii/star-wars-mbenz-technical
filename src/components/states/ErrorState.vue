@@ -2,6 +2,7 @@
   import { AlertCircle } from 'lucide-vue-next'
 
   import { Button } from '@/components/ui/button'
+  import { useI18n } from '@/composables/useI18n'
 
   interface Props {
     title?: string
@@ -11,13 +12,16 @@
   }
 
   const props = withDefaults(defineProps<Props>(), {
-    title: 'An error occurred',
-    message: 'Something went wrong.',
+    title: '',
+    message: '',
     error: null,
     onRetry: undefined,
   })
 
-  const finalMessage = props.error?.message || props.message
+  const { t } = useI18n()
+
+  const finalTitle = props.title || t('states.error.title')
+  const finalMessage = props.error?.message || props.message || t('states.error.message')
 </script>
 
 <template>
@@ -28,7 +32,7 @@
   >
     <AlertCircle class="w-16 h-16 text-destructive" aria-hidden="true" />
     <div class="space-y-1">
-      <h2 class="text-2xl font-bold">{{ title }}</h2>
+      <h2 class="text-2xl font-bold">{{ finalTitle }}</h2>
       <p class="text-muted-foreground max-w-md">
         {{ finalMessage }}
       </p>
@@ -36,10 +40,10 @@
     <Button
       v-if="onRetry"
       @click="onRetry"
-      aria-label="Retry loading data"
+      :aria-label="t('states.error.retryLoadingData')"
       data-testid="retry-button"
     >
-      Try Again
+      {{ t('common.retry') }}
     </Button>
   </div>
 </template>

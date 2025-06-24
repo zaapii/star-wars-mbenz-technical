@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 import { usePersonAttributes } from '../usePersonAttributes'
 
@@ -36,7 +36,7 @@ describe('usePersonAttributes', () => {
       'bg-blue-800 text-white dark:bg-blue-900 dark:text-white'
     )
     expect(getHairColorBadgeClass(persons[0].hairColor)).toBe(
-      'bg-yellow-800 text-white dark:bg-yellow-900 dark:text-white'
+      'bg-yellow-200 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
     )
   })
 
@@ -62,7 +62,7 @@ describe('usePersonAttributes', () => {
       'bg-yellow-950 text-white dark:bg-yellow-900 dark:text-white'
     )
     expect(getHairColorBadgeClass(persons[2].hairColor)).toBe(
-      'bg-yellow-950 text-white dark:bg-yellow-900 dark:text-white'
+      'bg-amber-800 text-white dark:bg-amber-900 dark:text-white'
     )
   })
 })

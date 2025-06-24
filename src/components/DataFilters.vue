@@ -13,6 +13,7 @@
     SelectValue,
   } from '@/components/ui/select'
   import type { SortDirection, SortOption } from '@/composables/useDataSort'
+  import { useI18n } from '@/composables/useI18n'
   import { humanReadableDate } from '@/lib/utils'
 
   interface Props {
@@ -29,12 +30,12 @@
   }
 
   const props = defineProps<Props>()
+  const { t } = useI18n()
 
   const emit = defineEmits<{
     (e: 'refresh'): void
   }>()
 
-  // Computed properties
   const hasActiveFilters = computed(() => props.searchTerm.trim() !== '')
 
   const activeFiltersCount = computed(() => {
@@ -43,7 +44,6 @@
     return count
   })
 
-  // Event handlers
   const handleSearchInput = (event: Event) => {
     const target = event.target as HTMLInputElement
     props.setSearchTerm(target.value)
@@ -63,34 +63,34 @@
   <div
     class="space-y-4 p-4 border border-primary/50 rounded-lg bg-card"
     role="region"
-    aria-label="Data filters and sorting controls"
+    :aria-label="t('common.dataFiltersAndSorting')"
   >
     <div class="flex items-center justify-between">
-      <h3 class="text-lg font-semibold" id="filters-heading">Filters & Sort</h3>
+      <h3 class="text-lg font-semibold" id="filters-heading">{{ t('common.filtersAndSort') }}</h3>
       <div class="flex items-center space-x-2">
         <Button
           v-if="hasActiveFilters"
           variant="outline"
           size="sm"
           @click="clearAllFilters"
-          aria-label="Clear all active filters"
+          :aria-label="t('common.clearAllFilters')"
         >
           <X class="h-4 w-4" aria-hidden="true" />
-          Clear All
+          {{ t('common.clearAll') }}
         </Button>
         <Badge
           v-if="activeFiltersCount > 0"
           variant="default"
-          aria-label="Number of active filters"
+          :aria-label="t('common.numberOfActiveFilters')"
         >
-          {{ activeFiltersCount }} active
+          {{ activeFiltersCount }} {{ t('common.active') }}
         </Badge>
       </div>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
       <div class="space-y-2">
-        <label for="search" class="text-sm font-medium"> Search by Name </label>
+        <label for="search" class="text-sm font-medium">{{ t('common.searchByName') }}</label>
         <div class="relative">
           <Input
             id="search"
@@ -101,8 +101,8 @@
             @input="handleSearchInput"
             class="pr-10"
             :aria-describedby="searchTerm ? 'search-clear' : undefined"
-            placeholder="Enter character name..."
-            aria-label="Search characters by name"
+            :placeholder="t('common.enterCharacterName')"
+            :aria-label="t('common.searchCharactersByName')"
           />
           <Button
             v-if="searchTerm"
@@ -111,7 +111,7 @@
             size="icon"
             @click="clearSearch"
             class="absolute right-0 top-0 h-full px-3 text-muted-foreground hover:text-foreground hover:bg-transparent"
-            aria-label="Clear search"
+            :aria-label="t('common.clearSearch')"
           >
             <X class="h-4 w-4" aria-hidden="true" />
           </Button>
@@ -119,14 +119,14 @@
       </div>
 
       <div class="space-y-2">
-        <label for="sort-select" class="text-sm font-medium"> Sort By </label>
+        <label for="sort-select" class="text-sm font-medium">{{ t('common.sortBy') }}</label>
         <div class="flex items-center space-x-2">
           <Select
             :model-value="sortKey"
             @update:model-value="value => value && setSortKey(String(value))"
           >
-            <SelectTrigger id="sort-select" aria-label="Select sort criteria">
-              <SelectValue placeholder="Select a sort key" />
+            <SelectTrigger id="sort-select" :aria-label="t('common.selectSortCriteria')">
+              <SelectValue :placeholder="t('common.selectSortKey')" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem v-for="option in sortOptions" :key="option.key" :value="option.key">
@@ -138,11 +138,11 @@
           <Button
             @click="toggleSortDirection"
             variant="outline"
-            :aria-label="`Sort ${sortDirection === 'asc' ? 'descending' : 'ascending'}`"
+            :aria-label="`${t('common.sort')} ${sortDirection === 'asc' ? t('common.descending') : t('common.ascending')}`"
             :aria-pressed="sortDirection === 'desc'"
             data-testid="sort-by-button"
           >
-            {{ sortDirection === 'asc' ? 'Ascending' : 'Descending' }}
+            {{ sortDirection === 'asc' ? t('common.ascending') : t('common.descending') }}
             <ArrowDown
               class="h-4 w-4 transition-transform duration-300 dark:text-white"
               :class="{ 'rotate-180': sortDirection === 'asc' }"
@@ -154,7 +154,9 @@
 
       <div class="flex justify-end gap-4">
         <div class="flex justify-end flex-col items-end">
-          <label for="data-updated-at" class="text-sm font-medium"> Last Updated </label>
+          <label for="data-updated-at" class="text-sm font-medium">{{
+            t('common.lastUpdated')
+          }}</label>
           <p id="data-updated-at" class="text-sm text-muted-foreground">
             {{ humanReadableDate(dataUpdatedAt || 0) }}
           </p>

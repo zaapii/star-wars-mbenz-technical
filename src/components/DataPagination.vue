@@ -12,8 +12,10 @@
   } from '@/components/ui/select'
 
   import { useAccessibility } from '@/composables/useAccessibility'
+  import { useI18n } from '@/composables/useI18n'
 
   const { handleKeyNavigation, announce } = useAccessibility()
+  const { t } = useI18n()
 
   interface Props {
     currentPage: number
@@ -96,33 +98,33 @@
       onArrowLeft: () => {
         if (props.hasPreviousPage) {
           props.previousPage()
-          announce(`Navigated to page ${props.currentPage - 1}`)
+          announce(`${t('common.navigatedToPage')} ${props.currentPage - 1}`)
         } else {
-          announce('Already on first page')
+          announce(t('common.alreadyOnFirstPage'))
         }
       },
       onArrowRight: () => {
         if (props.hasNextPage) {
           props.nextPage()
-          announce(`Navigated to page ${props.currentPage + 1}`)
+          announce(`${t('common.navigatedToPage')} ${props.currentPage + 1}`)
         } else {
-          announce('Already on last page')
+          announce(t('common.alreadyOnLastPage'))
         }
       },
       onArrowUp: () => {
         if (props.currentPage > 1) {
           props.firstPage()
-          announce('Navigated to first page')
+          announce(t('common.navigatedToFirstPage'))
         } else {
-          announce('Already on first page')
+          announce(t('common.alreadyOnFirstPage'))
         }
       },
       onArrowDown: () => {
         if (props.currentPage < props.totalPages) {
           props.lastPage()
-          announce(`Navigated to last page ${props.totalPages}`)
+          announce(`${t('common.navigatedToLastPage')} ${props.totalPages}`)
         } else {
-          announce('Already on last page')
+          announce(t('common.alreadyOnLastPage'))
         }
       },
       onEnter: () => {
@@ -139,7 +141,7 @@
         event.preventDefault()
         isKeyboardPagination.value = true
         props.goToPage(pageNumber)
-        announce(`Navigated to page ${pageNumber}`)
+        announce(`${t('common.navigatedToPage')} ${pageNumber}`)
       }
     }
   }
@@ -155,20 +157,23 @@
     ref="paginationRef"
     class="flex items-center justify-between space-x-2 py-4"
     role="navigation"
-    aria-label="Pagination navigation"
+    :aria-label="t('common.paginationNavigation')"
     tabindex="0"
     @keydown="handleKeyboardNavigation"
   >
     <div class="flex-1 text-sm text-muted-foreground">
       <span v-if="totalItems > 0" aria-live="polite">
-        Showing {{ startIndex + 1 }} to {{ endIndex + 1 }} of {{ totalItems }} results
+        {{ t('common.showing') }} {{ startIndex + 1 }} {{ t('common.to') }} {{ endIndex + 1 }}
+        {{ t('common.of') }} {{ totalItems }} {{ t('common.results') }}
       </span>
-      <span v-else aria-live="polite"> No results found </span>
+      <span v-else aria-live="polite">{{ t('common.noResults') }}</span>
     </div>
 
     <div class="flex items-center space-x-6 lg:space-x-8">
       <div class="flex items-center space-x-2">
-        <label for="items-per-page" class="text-sm font-medium">Rows per page</label>
+        <label for="items-per-page" class="text-sm font-medium">{{
+          t('common.rowsPerPage')
+        }}</label>
         <Select
           :model-value="`${itemsPerPage}`"
           @update:model-value="value => setItemsPerPage(Number(value))"
@@ -176,9 +181,9 @@
           <SelectTrigger
             id="items-per-page"
             class="h-8 w-[70px]"
-            aria-label="Select number of items per page"
+            :aria-label="t('common.selectItemsPerPage')"
           >
-            <SelectValue placeholder="Select rows" />
+            <SelectValue :placeholder="t('common.selectRows')" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem v-for="size in [5, 10, 20, 50]" :key="size" :value="`${size}`">
@@ -192,10 +197,14 @@
         class="flex w-[100px] items-center justify-center text-sm font-medium"
         aria-live="polite"
       >
-        Page {{ currentPage }} of {{ totalPages }}
+        {{ t('common.page') }} {{ currentPage }} {{ t('common.of') }} {{ totalPages }}
       </div>
 
-      <div class="flex items-center space-x-2" role="group" aria-label="Page navigation">
+      <div
+        class="flex items-center space-x-2"
+        role="group"
+        :aria-label="t('common.pageNavigation')"
+      >
         <Button
           variant="outline"
           size="icon"
@@ -203,7 +212,7 @@
           :disabled="!hasPreviousPage"
           @click="firstPage"
           data-testid="first-page-button"
-          aria-label="Go to first page"
+          :aria-label="t('common.goToFirstPage')"
         >
           <ChevronsLeft class="h-4 w-4" aria-hidden="true" />
         </Button>
@@ -215,12 +224,12 @@
           :disabled="!hasPreviousPage"
           @click="previousPage"
           data-testid="previous-page-button"
-          aria-label="Go to previous page"
+          :aria-label="t('common.goToPreviousPage')"
         >
           <ChevronLeft class="h-4 w-4" aria-hidden="true" />
         </Button>
 
-        <div class="flex items-center space-x-1" role="group" aria-label="Page numbers">
+        <div class="flex items-center space-x-1" role="group" :aria-label="t('common.pageNumbers')">
           <Button
             v-for="page in visiblePages"
             :key="page"
@@ -233,7 +242,7 @@
                 page === currentPage,
             }"
             @click="goToPage(page)"
-            :aria-label="`Go to page ${page}`"
+            :aria-label="`${t('common.goToPage')} ${page}`"
             :aria-current="page === currentPage ? 'page' : undefined"
           >
             {{ page }}
@@ -247,7 +256,7 @@
           :disabled="!hasNextPage"
           @click="nextPage"
           data-testid="next-page-button"
-          aria-label="Go to next page"
+          :aria-label="t('common.goToNextPage')"
         >
           <ChevronRight class="h-4 w-4" aria-hidden="true" />
         </Button>
@@ -259,7 +268,7 @@
           :disabled="!hasNextPage"
           @click="lastPage"
           data-testid="last-page-button"
-          aria-label="Go to last page"
+          :aria-label="t('common.goToLastPage')"
         >
           <ChevronsRight class="h-4 w-4" aria-hidden="true" />
         </Button>

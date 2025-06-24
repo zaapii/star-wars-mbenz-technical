@@ -3,24 +3,27 @@
 
   import { Toaster } from '@/components/ui/sonner'
 
+  import 'vue-sonner/style.css'
   import BaseLayout from './components/layout/BaseLayout.vue'
   import PageTransition from './components/layout/PageTransition.vue'
   import SkipLink from './components/SkipLink.vue'
   import { useAccessibility } from './composables/useAccessibility'
+  import { useI18n } from './composables/useI18n'
   import { useTheme } from './composables/useTheme'
-  import 'vue-sonner/style.css'
 
   const { mainContentRef, announce } = useAccessibility()
+  const { initializeLocale, t } = useI18n()
 
   onMounted(() => {
     useTheme().loadSavedTheme()
+    initializeLocale()
 
     const app = document.getElementById('app')
     if (app) {
       app.setAttribute('tabindex', '-1')
     }
 
-    announce('Star Wars Universe Data Explorer loaded', 'polite')
+    announce(t('accessibility.announcements.appLoaded'), 'polite')
   })
 </script>
 

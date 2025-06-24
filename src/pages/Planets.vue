@@ -7,10 +7,12 @@
   import PlanetCard from '@/components/PlanetCard.vue'
   import EmptyState from '@/components/states/EmptyState.vue'
   import ErrorState from '@/components/states/ErrorState.vue'
+  import { useI18n } from '@/composables/useI18n'
   import { queryKeys, useSwApiQuery, type Planet } from '@/services/api'
 
-
   import CardSkeleton from '../components/CardSkeleton.vue'
+
+  const { t } = useI18n()
 
   const { data, isLoading, isError, error, isRefetching, refetch, dataUpdatedAt } = useSwApiQuery<
     Planet[]
@@ -24,8 +26,8 @@
   const planets = computed(() => data.value || [])
 
   const sortOptions = [
-    { key: 'name', label: 'Name', type: 'string' as const },
-    { key: 'created', label: 'Created', type: 'date' as const },
+    { key: 'name', label: t('sortOptions.name'), type: 'string' as const },
+    { key: 'created', label: t('sortOptions.created'), type: 'date' as const },
   ]
 </script>
 
@@ -46,8 +48,8 @@
 
       <ErrorState
         v-else-if="isError"
-        title="Failed to load planets"
-        message="An unexpected error occurred while fetching planet data."
+        :title="t('states.error.failedToLoadPlanets')"
+        :message="t('states.error.unexpectedErrorPlanets')"
         :error="error"
         :on-retry="refetch"
       />
@@ -56,7 +58,7 @@
         v-else-if="filteredData.length"
         class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6"
         role="list"
-        aria-label="Star Wars planets"
+        :aria-label="t('common.starWarsPlanets')"
       >
         <PlanetCard
           v-for="planet in filteredData as Planet[]"
@@ -69,8 +71,8 @@
 
       <EmptyState
         v-else
-        title="No planets found"
-        message="No planets match your current filters. Try adjusting your search criteria."
+        :title="t('states.empty.noPlanetsFound')"
+        :message="t('states.empty.noResultsMessage')"
         :icon="Globe"
       />
     </template>

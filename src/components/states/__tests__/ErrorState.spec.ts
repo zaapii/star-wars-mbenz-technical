@@ -1,13 +1,33 @@
 import { render, screen } from '@testing-library/vue'
-import { describe, it, expect } from 'vitest'
+import { describe, expect, it } from 'vitest'
+import { createI18n } from 'vue-i18n'
 
 import ErrorState from '../ErrorState.vue'
 
+import de from '@/locale/de.json'
+import en from '@/locale/en.json'
+import es from '@/locale/es.json'
+
+const i18n = createI18n({
+  legacy: false,
+  locale: 'en',
+  fallbackLocale: 'en',
+  messages: {
+    en,
+    es,
+    de
+  }
+})
+
 describe('ErrorState', () => {
   it('renders the default title and message when no props are provided', () => {
-    render(ErrorState)
-    expect(screen.getByText('An error occurred')).toBeTruthy()
-    expect(screen.getByText('Something went wrong.')).toBeTruthy()
+    render(ErrorState, {
+      global: {
+        plugins: [i18n]
+      }
+    })
+    expect(screen.getByText('states.error.title')).toBeTruthy()
+    expect(screen.getByText('states.error.message')).toBeTruthy()
   })
 
   it('renders a custom title and message from props', () => {
@@ -15,7 +35,12 @@ describe('ErrorState', () => {
       title: 'Houston, we have a problem',
       message: 'The hyperdrive has failed.',
     }
-    render(ErrorState, { props })
+    render(ErrorState, {
+      props,
+      global: {
+        plugins: [i18n]
+      }
+    })
     expect(screen.getByText(props.title)).toBeTruthy()
     expect(screen.getByText(props.message)).toBeTruthy()
   })
@@ -25,21 +50,35 @@ describe('ErrorState', () => {
       error: new Error('This is a specific error message'),
       message: 'This should be overridden.',
     }
-    render(ErrorState, { props })
+    render(ErrorState, {
+      props,
+      global: {
+        plugins: [i18n]
+      }
+    })
     expect(screen.getByText(props.error.message)).toBeTruthy()
     expect(screen.queryByText(props.message)).toBeNull()
   })
 
   it('does not render the retry button if onRetry is not provided', () => {
-    render(ErrorState)
+    render(ErrorState, {
+      global: {
+        plugins: [i18n]
+      }
+    })
     expect(screen.queryByTestId('retry-button')).toBeNull()
   })
 
   it('renders the retry button when onRetry is provided', () => {
     const props = {
-      onRetry: () => {},
+      onRetry: () => { },
     }
-    render(ErrorState, { props })
+    render(ErrorState, {
+      props,
+      global: {
+        plugins: [i18n]
+      }
+    })
     expect(screen.getByTestId('retry-button')).toBeTruthy()
   })
 })

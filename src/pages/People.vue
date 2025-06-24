@@ -8,7 +8,10 @@
   import PersonCard from '@/components/PersonCard.vue'
   import EmptyState from '@/components/states/EmptyState.vue'
   import ErrorState from '@/components/states/ErrorState.vue'
+  import { useI18n } from '@/composables/useI18n'
   import { queryKeys, useSwApiQuery, type Person } from '@/services/api'
+
+  const { t } = useI18n()
 
   const { data, isLoading, isError, error, refetch, isRefetching, dataUpdatedAt } = useSwApiQuery<
     Person[]
@@ -22,8 +25,8 @@
   const people = computed(() => data.value || [])
 
   const sortOptions = [
-    { key: 'name', label: 'Name', type: 'string' as const },
-    { key: 'created', label: 'Created', type: 'date' as const },
+    { key: 'name', label: t('sortOptions.name'), type: 'string' as const },
+    { key: 'created', label: t('sortOptions.created'), type: 'date' as const },
   ]
 </script>
 
@@ -44,31 +47,31 @@
 
       <ErrorState
         v-else-if="isError"
-        title="Failed to load people"
-        message="An unexpected error occurred while fetching people data."
+        :title="t('states.error.failedToLoadPeople')"
+        :message="t('states.error.unexpectedErrorPeople')"
         :error="error"
         :on-retry="refetch"
       />
 
       <div
-        v-else-if="filteredData.length > 0"
-        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+        v-else-if="filteredData.length"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6"
         role="list"
         aria-label="Star Wars characters"
       >
         <PersonCard
-          v-for="(person, index) in filteredData as Person[]"
-          :data-testid="`person-card-${index}`"
+          v-for="person in filteredData as Person[]"
           :key="person.name"
           :person="person"
+          class="animate-in fade-in-0 slide-in-from-bottom-4 duration-500"
           role="listitem"
         />
       </div>
 
       <EmptyState
         v-else
-        title="No people found"
-        message="No people match your current filters. Try adjusting your search criteria."
+        :title="t('states.empty.noPeopleFound')"
+        :message="t('states.empty.noResultsMessage')"
         :icon="Users"
       />
     </template>
